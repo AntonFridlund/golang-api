@@ -1,27 +1,19 @@
 package main
 
 import (
-	"log"
 	"main/routes"
-	"net/http"
-	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	router := mux.NewRouter().StrictSlash(true)
+	app := fiber.New()
 
-	// Let Main router handle all top level routes.
-	routes.Main(router.PathPrefix("/").Subrouter())
+	// app.Use(cors.New(cors.Config{
+	// 	AllowCredentials: true,
+	// }))
 
-	server := http.Server{
-		Addr:         ":8080",           // configure the bind address
-		Handler:      router,            // set the default handler
-		ReadTimeout:  5 * time.Second,   // max time to read request from the client
-		WriteTimeout: 10 * time.Second,  // max time to write response to the client
-		IdleTimeout:  120 * time.Second, // max time for connections using TCP Keep-Alive
-	}
+	routes.Setup(app) // Setup routes.
 
-	log.Fatal(server.ListenAndServe())
+	app.Listen(":8080")
 }
