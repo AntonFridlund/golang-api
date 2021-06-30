@@ -3,10 +3,11 @@ package routes
 import (
 	controller "main/controllers/user"
 
-	"github.com/gorilla/mux"
+	"github.com/gofiber/fiber/v2"
 )
 
-func User(router *mux.Router) {
-	router.HandleFunc("", controller.User).Methods("GET")
-	router.HandleFunc("/new", controller.NewUser).Methods("GET")
+func User() *fiber.App {
+	router := fiber.New()                  // Register a new router.
+	router.Get("/new", controller.NewUser) // Register a new route for GET in /user.
+	return router                          // Return the router in order to mount it.
 }
