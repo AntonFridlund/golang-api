@@ -1,7 +1,7 @@
 ##
 ## Build
 ##
-## docker build -t golang-api:multistage -f Dockerfile .
+## docker build -t golang-api:tags-go-here -f Dockerfile .
 
 FROM golang:1.16.6 AS build
 
@@ -10,7 +10,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-RUN CGO_ENABLED=0 go build -o /bin/app .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/app .
 
 ##
 ## Deploy
@@ -27,4 +27,4 @@ ENTRYPOINT ["/bin/app"]
 ##
 ## Run
 ##
-## docker run -d -p 8080:8080 --name golang-api golang-api:multistage
+## docker run -d -p 8080:8080 --name golang-api golang-api:tags-go-here
