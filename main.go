@@ -9,11 +9,10 @@ import (
 )
 
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{DisableStartupMessage: true})
 
 	app.Use(helmet.New()) // Use helmet.
-
-	app.Use(logger.New())
+	app.Use(logger.New()) // Use logger.
 
 	routes.Setup(app) // Setup routes.
 
