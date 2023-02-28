@@ -3,7 +3,7 @@
 ##
 ## docker build -t golang-api:tags-go-here -f Dockerfile .
 
-FROM golang:1.16.6
+FROM golang:1.20.1-bullseye AS build
 
 WORKDIR /
 COPY . .
@@ -14,10 +14,14 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o golang-api
 ## Deploy
 ##
 
-FROM alpine:3.14
+FROM scratch
 
-WORKDIR /
-COPY --from=0 golang-api /app/golang-api
+WORKDIR /app
+COPY --from=build /golang-api /app/golang-api
+
+# Set the PORT environment variable
+ENV PORT=8080
+
 EXPOSE 8080
 ENTRYPOINT ["/app/golang-api"]
 
